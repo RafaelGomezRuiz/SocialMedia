@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SocialMedia.Infraestructure.Identity.Context;
 using SocialMedia.Infraestructure.Identity.Entities;
+using SocialMedia.Infraestructure.Identity.Seeds;
 using SocialMedia.Infraestructure.Identity.Services;
 
 namespace SocialMedia.Infraestructure.Identity
@@ -41,6 +43,22 @@ namespace SocialMedia.Infraestructure.Identity
             #region Services
             services.AddTransient<IAccountService, AccountService>();
             #endregion
+        }
+
+        public static async Task AddIdentitySeeds(this IHost app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try{
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    await DefaultRoles.SeedAsync(roleManager);
+                }
+                catch(Exception ex)
+                {
+
+                }
+            }
         }
     }
 }

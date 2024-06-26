@@ -36,7 +36,7 @@ namespace SocialMedia.Core.Application.ViewModels.Users
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "Debe colocar un numero de telefono")]
-        [DataType(DataType.Text)]
+        [DataType(DataType.PhoneNumber)]
         public string? PhoneNumber { get; set; }
 
         public string? ProfilePhoto { get; set; }

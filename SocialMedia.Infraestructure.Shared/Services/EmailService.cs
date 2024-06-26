@@ -38,8 +38,8 @@ namespace SocialMedia.Infraestructure.Shared.Services
                 await smtp.SendAsync(email);
                 smtp.Disconnect(true);
             }
-            catch (Exception ex) { }
-            throw new NotImplementedException();
+            catch (Exception ex) {
+            }
         }
     }
 }

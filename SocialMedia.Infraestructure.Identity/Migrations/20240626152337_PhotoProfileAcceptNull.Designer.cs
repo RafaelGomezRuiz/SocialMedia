@@ -12,8 +12,8 @@ using SocialMedia.Infraestructure.Identity.Context;
 namespace SocialMedia.Infraestructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240626021444_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240626152337_PhotoProfileAcceptNull")]
+    partial class PhotoProfileAcceptNull
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,9 +179,11 @@ namespace SocialMedia.Infraestructure.Identity.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -208,7 +210,6 @@ namespace SocialMedia.Infraestructure.Identity.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfilePhoto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")

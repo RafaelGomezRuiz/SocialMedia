@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SocialMedia.Core.Application.Dtos.Account;
 using SocialMedia.Core.Application.Interfaces.Services;
+using SocialMedia.Core.Application.ViewModels.Users;
 
 namespace WebApp.SocialMedia.Controllers
 {
@@ -13,7 +15,47 @@ namespace WebApp.SocialMedia.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return View(new LoginViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(LoginViewModel loginVm)
+        {
+            if (!ModelState.IsValid)
+            {
+
+            }
+            return View(new LoginViewModel());
+        }
+        public IActionResult SaveUser()
+        {
+            return View(new SaveUserViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SaveUser(SaveUserViewModel saveUserViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(saveUserViewModel);
+            }
+            var origin = Request.Headers["origin"];
+            RegisterResponse response=await _userService.RegisterAsync(saveUserViewModel,origin);
+            if (response.HasError)
+            {
+                saveUserViewModel.HasError = response.HasError;
+                saveUserViewModel.ErrorDescription = response.ErrorDescription;
+                return View(saveUserViewModel);
+            }
+            return RedirectToRoute(new { controller = "User", action = "index" });
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            string response = await _userService.ConfirmEmailAsync(userId, token);
+            return View("ConfirmEmail", response);
         }
     }
 }
