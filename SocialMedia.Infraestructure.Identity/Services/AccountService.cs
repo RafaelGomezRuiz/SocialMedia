@@ -58,7 +58,7 @@ namespace SocialMedia.Infraestructure.Identity.Services
             return response;
         }
 
-        public async Task SignOut()
+        public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
         }

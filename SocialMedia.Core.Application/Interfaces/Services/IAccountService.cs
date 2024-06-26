@@ -9,6 +9,6 @@ namespace SocialMedia.Infraestructure.Identity.Services
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
         Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request);
-        Task SignOut();
+        Task SignOutAsync();
     }
 }
