@@ -1,5 +1,11 @@
+using SocialMedia.Infraestructure.Identity;
+using SocialMedia.Infraestructure.Shared;
+
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddIdentityInfraestruture(builder.Configuration);
+builder.Services.AddSharedInfraestructure(builder.Configuration);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -18,6 +24,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
