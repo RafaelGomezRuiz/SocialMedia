@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocialMedia.Core.Application.Interfaces.Services;
+using SocialMedia.Core.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace SocialMedia.Core.Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             #region services
-            services.AddTransient<IUserService, IUserService>();
+            services.AddTransient<IUserService, UserService>();
             #endregion
         }
     }

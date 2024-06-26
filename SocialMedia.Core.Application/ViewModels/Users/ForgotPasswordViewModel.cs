@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SocialMedia.Core.Application.ViewModels.Users
 {
-    public class ForgotPassword
+    public class ForgotPasswordViewModel
     {
         [Required(ErrorMessage = "Debe colocar su email")]
         [DataType(DataType.Text)]
