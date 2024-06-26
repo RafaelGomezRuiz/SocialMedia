@@ -3,11 +3,6 @@ using SocialMedia.Core.Application.Dtos.Account;
 using SocialMedia.Core.Application.Interfaces.Services;
 using SocialMedia.Core.Application.ViewModels.Users;
 using SocialMedia.Infraestructure.Identity.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SocialMedia.Core.Application.Services
 {

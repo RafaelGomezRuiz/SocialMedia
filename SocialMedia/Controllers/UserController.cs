@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SocialMedia.Core.Application.Dtos.Account;
+using SocialMedia.Core.Application.Enums;
+using SocialMedia.Core.Application.Helpers;
 using SocialMedia.Core.Application.Interfaces.Services;
 using SocialMedia.Core.Application.ViewModels.Users;
+using SocialMedia.Infraestructure.Identity.Entities;
 
 namespace WebApp.SocialMedia.Controllers
 {
@@ -49,6 +52,8 @@ namespace WebApp.SocialMedia.Controllers
                 saveUserViewModel.ErrorDescription = response.ErrorDescription;
                 return View(saveUserViewModel);
             }
+            response.ProfilePhoto= UploadFile.Upload(saveUserViewModel.File,response.Id,UploadFileTypes.PROFILEPHOTO,false,response.ProfilePhoto);
+
             return RedirectToRoute(new { controller = "User", action = "index" });
         }
 
