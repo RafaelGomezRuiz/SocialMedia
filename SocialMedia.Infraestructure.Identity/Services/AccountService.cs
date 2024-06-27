@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using SocialMedia.Core.Application.Dtos.Account;
 using SocialMedia.Core.Application.Dtos.Email;
+using SocialMedia.Core.Application.Helpers;
 using SocialMedia.Core.Application.Enums;
 using SocialMedia.Infraestructure.Identity.Entities;
 using StockApp.Core.Application.Interfaces.Services;
@@ -15,7 +16,7 @@ namespace SocialMedia.Infraestructure.Identity.Services
         protected readonly UserManager<ApplicationUser> _userManager;
         protected readonly SignInManager<ApplicationUser> _signInManager;
         protected readonly IEmailService _emailService;
-
+      
         public AccountService(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager, IEmailService _emailService)
         {
             this._userManager = _userManager;
@@ -142,21 +143,30 @@ namespace SocialMedia.Infraestructure.Identity.Services
             {
                 HasError = false
             };
-            ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
+            ApplicationUser user = await _userManager.FindByNameAsync(request.UserName);
 
             if (user == null)
             {
                 response.HasError = true;
-                response.ErrorDescription = $"There are no user registered with this {request.Email} address";
+                response.ErrorDescription = $"There are no user registered with this '{request.UserName}' username";
                 return response;
             }
-            var verificationUri = await SendForgotPasswordUri(user, origin);
 
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var newPassword = PasswordGenerator.GeneratePassword();
+            var result = await _userManager.ResetPasswordAsync(user, code, newPassword);
+            if (!result.Succeeded)
+            {
+                response.HasError = true;
+                response.ErrorDescription = $"An error has ocurred resetting the password try again";
+                return response;
+            }
+            var LoginAddress = await SendForgotPasswordUri(origin);
             await _emailService.SendAsync(new EmailRequest()
             {
-                To = request.Email,
-                Body = $"Please reset your account visisting this Url: {verificationUri}",
-                Subject = "Reset Password"
+                To = user.Email,
+                Body = $"Reset successfully, this is your new password: {newPassword} Click here to join the app! {LoginAddress}",
+                Subject = "Password Resseted"
             });
             return response;
         }
@@ -167,11 +177,11 @@ namespace SocialMedia.Infraestructure.Identity.Services
             {
                 HasError = false
             };
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(request.UserName);
             if (user == null)
             {
                 response.HasError = true;
-                response.ErrorDescription = $"No accounts registered with this {request.Email} email address";
+                response.ErrorDescription = $"No accounts registered with this '{request.UserName}' username ";
                 return response;
             }
             request.Token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Token));
@@ -179,7 +189,7 @@ namespace SocialMedia.Infraestructure.Identity.Services
             if (!result.Succeeded)
             {
                 response.HasError = true;
-                response.ErrorDescription = $"No accounts registered with this {request.Email} email";
+                response.ErrorDescription = $"An error has ocurred rsetting the password try again";
                 return response;
             }
 
@@ -206,13 +216,11 @@ namespace SocialMedia.Infraestructure.Identity.Services
         //    return $"Has ocurred an error updating the user try again!";
         //}
 
-        private async Task<string> SendForgotPasswordUri(ApplicationUser user, string origin)
+        private async Task<string> SendForgotPasswordUri(string origin)
         {
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var route = "User/ResetPassword";
+            var route = "User/Index";
             var Uri = new Uri(string.Concat($"{origin}/", route));
-            var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "token", code);
+            var verificationUri = Uri.ToString();
             return verificationUri;
         }
         private async Task<string> SendVerificationEmailUri(ApplicationUser user, string origin)
@@ -225,5 +233,6 @@ namespace SocialMedia.Infraestructure.Identity.Services
             verificationUri = QueryHelpers.AddQueryString(verificationUri, "token", code);
             return verificationUri;
         }
+        
     }
 }

@@ -28,6 +28,7 @@ namespace SocialMedia.Core.Application.Mappings
                 .ForMember(destino => destino.HasError, otp => otp.Ignore())
                 .ForMember(destino => destino.ErrorDescription, otp => otp.Ignore())
                 .ReverseMap();
+
             CreateMap<ForgotPasswordRequest, ResetPasswordViewModel>()
                 .ForMember(destino => destino.HasError, otp => otp.Ignore())
                 .ForMember(destino => destino.ErrorDescription, otp => otp.Ignore())

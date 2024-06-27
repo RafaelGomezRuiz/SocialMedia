@@ -9,9 +9,9 @@ namespace SocialMedia.Core.Application.ViewModels.Users
 {
     public class ForgotPasswordViewModel
     {
-        [Required(ErrorMessage = "Debe colocar su email")]
+        [Required(ErrorMessage = "Debe colocar su nombre de usuario")]
         [DataType(DataType.Text)]
-        public string? Email { get; set; }
+        public string? UserName { get; set; }
         public bool HasError { get; set; }
         public string? ErrorDescription { get; set; }
     }

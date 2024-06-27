@@ -43,7 +43,7 @@ namespace WebApp.SocialMedia.Controllers
             return RedirectToRoute(new { controller = "User", action = "index" });
         }
 
-            public IActionResult SaveUser()
+        public IActionResult SaveUser()
         {
             return View(new SaveUserViewModel());
         }
@@ -75,5 +75,42 @@ namespace WebApp.SocialMedia.Controllers
             string response = await _userService.ConfirmEmailAsync(userId, token);
             return View("ConfirmEmail", response);
         }
+
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View(new ForgotPasswordViewModel());
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordVm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(forgotPasswordVm);
+            }
+            var origin = Request.Headers["origin"];
+            ForgotPasswordResponse response = await _userService.ForgotPasswordAsync(forgotPasswordVm, origin);
+            if (response.HasError)
+            {
+                forgotPasswordVm.HasError = true;
+                forgotPasswordVm.ErrorDescription=response.ErrorDescription;
+                return View(forgotPasswordVm);
+            }
+            //mandar mensaje de que se envio
+            return RedirectToRoute(new { controller = "user", action = "index" });
+        }
+
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordVm)
+        {
+            ResetPasswordResponse response = await _userService.ResetPasswordAsync(resetPasswordVm);
+            if (response.HasError)
+            {
+                resetPasswordVm.ErrorDescription = response.ErrorDescription;
+                return RedirectToAction("ForgotPassword",resetPasswordVm);
+            }
+            return RedirectToAction("Index");
+        }
+
     }
+
 }

@@ -11,7 +11,7 @@ namespace SocialMedia.Core.Application.ViewModels.Users
     {
         [Required(ErrorMessage = "Debe colocar el correo del usuario")]
         [DataType(DataType.Text)]
-        public string Email { get; set; }
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "Debe colocar un token")]
         [DataType(DataType.Text)]
@@ -21,10 +21,6 @@ namespace SocialMedia.Core.Application.ViewModels.Users
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Compare(nameof(Password), ErrorMessage = "Las contrasenias no son iguales")]
-        [Required(ErrorMessage = "Debe colocar una contrasenia")]
-        [DataType(DataType.Password)]
-        public string ConfirmPassword { get; set; }
         public bool HasError { get; set; }
         public string? ErrorDescription { get; set; }
     }
