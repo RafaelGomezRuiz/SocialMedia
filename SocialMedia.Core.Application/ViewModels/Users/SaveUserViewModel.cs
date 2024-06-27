@@ -37,6 +37,7 @@ namespace SocialMedia.Core.Application.ViewModels.Users
 
         [Required(ErrorMessage = "Debe colocar un numero de telefono")]
         [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^(\+1-)?(809|829|849)-\d{3}-\d{4}$", ErrorMessage = "El número de teléfono no es válido en la República Dominicana")]
         public string? PhoneNumber { get; set; }
 
         public string? ProfilePhoto { get; set; }

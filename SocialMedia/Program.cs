@@ -1,5 +1,6 @@
 using SocialMedia.Core.Application;
 using SocialMedia.Infraestructure.Identity;
+using SocialMedia.Infraestructure.Persistence;
 using SocialMedia.Infraestructure.Shared;
 using WebApp.SocialMedia.MiddleWares;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSession();
 
+builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddIdentityInfraestruture(builder.Configuration);
 builder.Services.AddSharedInfraestructure(builder.Configuration);
 builder.Services.AddApplicationLayer(builder.Configuration);

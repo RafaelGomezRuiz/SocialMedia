@@ -20,6 +20,8 @@ namespace SocialMedia.Core.Application
 
             #region services
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IPostService, PostService>();
+
             #endregion
         }
     }
