@@ -34,6 +34,10 @@ namespace SocialMedia.Core.Application.Services
         {
             await _accountService.SignOutAsync();
         }
+        //public async Task<string> UpdateUser(AuthenticationResponse response)
+        //{
+        //    return await _accountService.UpdateUser(response);
+        //}
 
         public async Task<string> ConfirmEmailAsync(string userId, string token)
         {

@@ -5,7 +5,7 @@ namespace SocialMedia.Core.Application.Helpers
 {
     public static class UploadFile
     {
-        public static string Upload(IFormFile file, string id,UploadFileTypes type, bool isEditMode = false, string imagePath = "")
+        public static string Upload(IFormFile file,UploadFileTypes type, string userId="", int postId = 0, bool isEditMode = false, string imagePath = "")
         {
             if (isEditMode && file == null)
             {
@@ -15,11 +15,11 @@ namespace SocialMedia.Core.Application.Helpers
 
             if (type.ToString()=="PROFILEPHOTO")
             {
-                 basePath = $"/Images/Users/{id}";
+                 basePath = $"/Images/Users/{userId}";
             }
             else if (type.ToString()=="POSTFILE")
             {
-                 basePath = $"/Images/Posts/{id}";
+                 basePath = $"/Images/Posts/{postId}";
             }
             //FormatException correcta de combinar dos rutas
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");

@@ -7,6 +7,7 @@ namespace SocialMedia.Infraestructure.Identity.Services
         Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
         Task<string> ConfirmAccountAsync(string userId, string token);
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
+        //Task<string> UpdateUser(AuthenticationResponse user);
         Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request);
         Task SignOutAsync();

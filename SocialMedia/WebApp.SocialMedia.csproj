@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="MiddleWares\" />
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 

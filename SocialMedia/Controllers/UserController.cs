@@ -4,7 +4,6 @@ using SocialMedia.Core.Application.Enums;
 using SocialMedia.Core.Application.Helpers;
 using SocialMedia.Core.Application.Interfaces.Services;
 using SocialMedia.Core.Application.ViewModels.Users;
-using SocialMedia.Infraestructure.Identity.Entities;
 
 namespace WebApp.SocialMedia.Controllers
 {
@@ -23,15 +22,28 @@ namespace WebApp.SocialMedia.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(LoginViewModel loginVm)
+        public async Task<IActionResult> Index(LoginViewModel loginVm)
         {
             if (!ModelState.IsValid)
             {
-
+                return View(loginVm);
             }
-            return View(new LoginViewModel());
+            AuthenticationResponse responseLogin= await _userService.LoginAsync(loginVm);
+            if (responseLogin!=null && responseLogin.HasError!=true)
+            {
+                HttpContext.Session.Set<AuthenticationResponse>("user", responseLogin);
+                return RedirectToRoute(new { controller = "Home", action = "Index" });
+            }
+            return View(loginVm);
         }
-        public IActionResult SaveUser()
+        public async Task<IActionResult> SignOut()
+        {
+            await _userService.SignOutAsync();
+            HttpContext.Session.Remove("user");
+            return RedirectToRoute(new { controller = "User", action = "index" });
+        }
+
+            public IActionResult SaveUser()
         {
             return View(new SaveUserViewModel());
         }
@@ -52,7 +64,8 @@ namespace WebApp.SocialMedia.Controllers
                 saveUserViewModel.ErrorDescription = response.ErrorDescription;
                 return View(saveUserViewModel);
             }
-            response.ProfilePhoto= UploadFile.Upload(saveUserViewModel.File,response.Id,UploadFileTypes.PROFILEPHOTO,false,response.ProfilePhoto);
+            response.ProfilePhoto= UploadFile.Upload(saveUserViewModel.File,UploadFileTypes.PROFILEPHOTO, response.Id);
+            //falta hacerle un update a la foto
 
             return RedirectToRoute(new { controller = "User", action = "index" });
         }

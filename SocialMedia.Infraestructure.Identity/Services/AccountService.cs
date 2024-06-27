@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using SocialMedia.Core.Application.Dtos.Account;
 using SocialMedia.Core.Application.Dtos.Email;
@@ -184,6 +185,26 @@ namespace SocialMedia.Infraestructure.Identity.Services
 
             return response;
         }
+
+        //public async Task<string> UpdateUser(RegisterResponse response)
+        //{
+        //    ApplicationUser user = new()
+        //    {
+        //        Id = response.Id,
+        //        UserName=response.UserName,
+        //        Email = response.Email,
+        //        PhoneNumber = response.PhoneNumber,
+        //        ProfilePhoto = response.ProfilePhoto,
+
+        //    };
+        //    var userUpdated = await _userManager.UpdateAsync(user);
+
+        //    if (!userUpdated.Succeeded)
+        //    {
+        //        return $"User {user.UserName} updated successfully";
+        //    }
+        //    return $"Has ocurred an error updating the user try again!";
+        //}
 
         private async Task<string> SendForgotPasswordUri(ApplicationUser user, string origin)
         {
