@@ -11,7 +11,7 @@ namespace SocialMedia.Infraestructure.Persistence.Repositories
 {
     public class GenericRepository<Entity> : IGenericRepository<Entity> where Entity : class
     {
-        protected readonly ApplicationContext _dbContext;
+        private readonly ApplicationContext _dbContext;
         public GenericRepository(ApplicationContext _dbContext)
         {
             this._dbContext = _dbContext;

@@ -34,6 +34,8 @@ namespace SocialMedia.Infraestructure.Persistence
 
             #region Repositories
             services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IFriendRepository, FriendRepository>();
+
             #endregion
         }
     }

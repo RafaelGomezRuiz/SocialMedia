@@ -9,8 +9,8 @@ namespace SocialMedia.Core.Application.Services
         where ViewModel : class
         where Entity : class
     {
-        protected readonly IGenericRepository<Entity> _repository;
-        protected readonly IMapper _mapper;
+        private readonly IGenericRepository<Entity> _repository;
+        private readonly IMapper _mapper;
         public GenericService(IGenericRepository<Entity> _repository, IMapper _mapper)
         {
             this._repository = _repository;

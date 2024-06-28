@@ -1,5 +1,5 @@
-﻿using SocialMedia.Core.Application.Interfaces.Repositories;
-using SocialMedia.Core.Application.ViewModels.Posts;
+﻿using AutoMapper;
+using SocialMedia.Core.Application.Interfaces.Repositories;
 using SocialMedia.Core.Domain.Entities;
 using SocialMedia.Infraestructure.Persistence.Context;
 using System;
@@ -10,13 +10,12 @@ using System.Threading.Tasks;
 
 namespace SocialMedia.Infraestructure.Persistence.Repositories
 {
-    public class PostRepository : GenericRepository<Post>,IPostRepository
+    public class FriendRepository : GenericRepository<Friend>,IFriendRepository
     {
         protected readonly ApplicationContext _applicationContext;
-        public PostRepository(ApplicationContext _applicationContext) :base(_applicationContext)
+        public FriendRepository(ApplicationContext _applicationContext, IMapper _mapper) : base(_applicationContext)
         {
             this._applicationContext = _applicationContext;
         }
-
     }
 }

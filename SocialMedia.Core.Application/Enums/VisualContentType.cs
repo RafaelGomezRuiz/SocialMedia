@@ -4,7 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocialMedia.Core.Application.ViewModels.Comment;
-    public class CommentViewModel
+namespace SocialMedia.Core.Application.Enums
+{
+    public enum VisualContentType
     {
+        PHOTO,
+        VIDEO,
+        TEXT
     }
+}

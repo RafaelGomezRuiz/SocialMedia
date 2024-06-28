@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using SocialMedia.Core.Application.Dtos.Account;
+using SocialMedia.Core.Application.Enums;
 using SocialMedia.Core.Application.Helpers;
 using SocialMedia.Core.Application.Interfaces.Repositories;
 using SocialMedia.Core.Application.Interfaces.Services;
@@ -27,6 +28,29 @@ namespace SocialMedia.Core.Application.Services
         {
             postVm.UserId = _userLoged.Id;
             return await base.AddAsync(postVm);
+        }
+
+        public async Task<IEnumerable<PostViewModel>> GetAllWithIncludeWithFilter(PostViewModelFilter filters)
+        {
+            IEnumerable<Post> posts = await _postRepository.GetAllWithIncludeAsync(new List<string> { "Comments" });
+            if (filters.FromUserOrFriends==PostsFrom.USER)
+            {
+                return posts.Where(post=>post.UserId == _userLoged.Id).Select(s=>new PostViewModel
+                {
+                    Id = s.Id,
+                    VisualContentPath=s.VisualContentPath,
+                    Descripcion=s.Descripcion,
+                    VisualContentType=s.VisualContentType,
+                    Created=s.Created,
+                    UserId=s.UserId
+                });
+            }
+            //else
+            //{
+                
+            //    return posts.Where(post=>post.UserId==)
+            //}
+            throw new NotImplementedException();
         }
     }
 }

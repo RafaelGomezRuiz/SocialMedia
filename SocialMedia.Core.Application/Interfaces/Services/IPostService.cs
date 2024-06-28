@@ -5,6 +5,6 @@ namespace SocialMedia.Core.Application.Interfaces.Services
 {
     public interface IPostService : IGenericService<SavePostViewModel,PostViewModel,Post>
     {
-
+        Task<IEnumerable<PostViewModel>> GetAllWithIncludeWithFilter(PostViewModelFilter filters);
     }
 }

@@ -15,6 +15,7 @@ namespace SocialMedia.Core.Application.ViewModels.Posts
         public string Descripcion { get; set; }
         public string VisualContentType { get; set; }
         public string UserId { get; set; }
+        public DateTime Created { get; set; }
         public virtual IEnumerable<CommentViewModel> Comments { get; set; }
     }
 }
