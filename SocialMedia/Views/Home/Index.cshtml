@@ -58,7 +58,7 @@
                                     <input asp-for="VisualContentType" type="hidden" value=@VisualContentType.PHOTO.ToString()>
                                 <div class="mb-3">
                                     <label asp-for="File" class="form-label">Imagen: </label>
-                                    <input asp-for="File" class="form-control">
+                                    <input required asp-for="File" class="form-control">
                                     <span asp-validation-for="File" class="text-danger"></span>
                                 </div>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

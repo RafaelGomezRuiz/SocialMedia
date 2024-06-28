@@ -11,7 +11,9 @@ namespace SocialMedia.Core.Application.ViewModels.Posts
     public class SavePostViewModel
     {
         public int Id { get; set; }
+        [DataType(DataType.Text)]
         public string? VisualContentPath { get; set; }
+        [DataType(DataType.Text)]
         public string? Descripcion { get; set; }
         public string? VisualContentType { get; set; }
         

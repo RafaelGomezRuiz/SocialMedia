@@ -33,7 +33,7 @@ namespace WebApp.SocialMedia.Controllers
             SavePostViewModel post =await _postService.AddAsync(postVm);
             if (post!=null)
             {
-                UploadFile.Upload(postVm.File, UploadFileTypes.POSTFILE, "", post.Id);
+                post.VisualContentPath= UploadFile.Upload(postVm.File, UploadFileTypes.POSTFILE, "", post.Id);
                 await _postService.Update(post,post.Id);
             }
             return RedirectToRoute(new {controller="Home",action="Index"});

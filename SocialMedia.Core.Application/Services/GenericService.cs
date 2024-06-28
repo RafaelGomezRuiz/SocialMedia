@@ -45,7 +45,7 @@ namespace SocialMedia.Core.Application.Services
 
         public virtual async Task Update(SaveViewModel viewModel, int id)
         {
-            Entity entity = await _repository.GetByIdAsync(id);
+            Entity entity = _mapper.Map<Entity>(viewModel);
             await _repository.UpdateAsync(entity,id);
         }
     }
