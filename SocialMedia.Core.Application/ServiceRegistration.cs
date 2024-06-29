@@ -22,8 +22,6 @@ namespace SocialMedia.Core.Application
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IFriendService, FriendService>();
-
-
             #endregion
         }
     }

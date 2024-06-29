@@ -27,3 +27,7 @@ body {
     border-radius: 50%;
     object-fit: cover; 
 }
+
+.gradient-background {
+    background: linear-gradient(to bottom, blue 0%, light-blue 100%);
+}

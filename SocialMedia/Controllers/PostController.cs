@@ -31,11 +31,21 @@ namespace WebApp.SocialMedia.Controllers
                 return View(postVm);
             }
             SavePostViewModel post =await _postService.AddAsync(postVm);
-            if (post!=null)
+            if (post.VisualContentType== VisualContentType.PHOTO.ToString())
             {
-                post.VisualContentPath= UploadFile.Upload(postVm.File, UploadFileTypes.POSTFILE, "", post.Id);
-                await _postService.Update(post,post.Id);
+                if (post != null)
+                {
+                    post.VisualContentPath = UploadFile.Upload(postVm.File, UploadFileTypes.POSTFILE, "", post.Id);
+                    await _postService.Update(post, post.Id);
+                }
             }
+            return RedirectToRoute(new {controller="Home",action="Index"});
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        { 
+            await _postService.Delete(id);
             return RedirectToRoute(new {controller="Home",action="Index"});
         }
     }

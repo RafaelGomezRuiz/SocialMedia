@@ -12,36 +12,26 @@
 }
 
 <div class="container">
-    <div class="row d-flex justify-content-between">
+    <div class="row d-flex justify-content-start">
         <div class=" col-3">
-            <div class=" p-2 bg-light">
-                <div class="list-group ">
-                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                        Menu
-                    </a>
-                    <a asp-controller="Home" asp-action="Index" class="list-group-item list-group-item-action"><i class="bi-house-door"> Home</i></a>
-                    <a asp-controller="User" asp-action="SignOut" class="list-group-item list-group-item-action"><i class="bi-people"> Friends</i></a>
-                    <a asp-controller="User" asp-action="SignOut" class="list-group-item list-group-item-action"><i class="bi-person"> Profile</i></a>
-                    <a asp-controller="User" asp-action="SignOut" class="list-group-item list-group-item-action"><i class="bi-box-arrow-left"> Sign out</i></a>
-                </div>
-            </div>
+            @await Html.PartialAsync("_Actions")
         </div>
         @* post *@
-        <div class=" card col-6 p-2">
+        <div class=" card col-6 p-2 bg-light">
             <div class=" card-header d-flex justify-content-center">
-                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#uploadImage">
+                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#uploadText">
                     <i class="bi-plus"></i> Subir texto
                 </button>
                 <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#uploadImage">
                     <i class="bi-image"></i> Subir imagen
                 </button>
-                <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#uploadVideo">
                     <i class="bi-media">Subir video</i>
                 </button>
             </div>
             
             <!-- Modal -->
-            <div class="modal fade" id="uploadImage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="uploadImage" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -63,11 +53,78 @@
                                 </div>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button  type="submit" class="btn btn-primary">Save changes</button>
-
                             </form>
-                            
                         </div>
-                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="uploadText" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Crear post</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" asp-controller="Post" asp-action="Add" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label asp-for="Descripcion" class="form-label">Descripcion: </label>
+                                    <input required asp-for="Descripcion" class="form-control">
+                                    <span asp-validation-for="Descripcion" class="text-danger"></span>
+                                </div>
+                                <input asp-for="VisualContentType" type="hidden" value=@VisualContentType.TEXT.ToString()>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* modelvideo *@
+            <div class="modal fade" id="uploadVideo" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Crear post</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" asp-controller="Post" asp-action="Add" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label asp-for="Descripcion" class="form-label">Descripcion: </label>
+                                    <input asp-for="Descripcion" class="form-control">
+                                    <span asp-validation-for="Descripcion" class="text-danger"></span>
+                                </div>
+                                <input asp-for="VisualContentType" type="hidden" value=@VisualContentType.VIDEO.ToString()>
+                                <div class="mb-3">
+                                    <label asp-for="VisualContentPath" class="form-label">Url del video </label>
+                                    <input required asp-for="VisualContentPath" class="form-control">
+                                    <span asp-validation-for="VisualContentPath" class="text-danger"></span>
+                                </div>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* modal eliminar *@
+            <div class="modal fade" id="EliminarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar post</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Estás seguro de que deseas eliminar este post?</p>
+                            <form method="post" asp-controller="Post" asp-action="Delete">
+                                <input type="hidden" id="post-id-hidden" name="id" >
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -82,16 +139,26 @@
                 {
                 @foreach (var post in postsViewBag)
                 {
-                    <div class="card">
-                        <div class="card-header row">
-                            <img class="profile-picture" src=" @userLoged.ProfilePhoto " />
-                            <p>@userLoged.UserName</p>
-                            <p>@post.Created</p>
-                            <button class="btn btn-outline-danger">Eliminar</button>
+                    <div class="card mb-3">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="">
+                                <img class="profile-picture" src=" @userLoged.ProfilePhoto " />
+                                <p>@userLoged.UserName</p>
+                            </div>
+                            <div class="">
+                                <p>@post.Created</p>
+                                <div class=" align-items-center">
+                                    <button type="button" class="btn btn-outline-danger justify-content-end" data-bs-toggle="modal" data-bs-target="#EliminarModal" data-post-id="@post.Id">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                        <button class="btn btn-outline-warning align-items-end"><i class="bi bi-pen"></i></button>
+                                </div>
+
+                            </div>
                         </div>
                         <div class="card-body">
                             @if(post.VisualContentType== VisualContentType.PHOTO.ToString()){
-                                 <img src="@post.VisualContentPath"/>
+                                    <img src="@post.VisualContentPath" class="img-fluid card-img-top" />
                                 @if (@post.Descripcion != null)
                                 {
                                     <p>@post.Descripcion</p>
@@ -99,12 +166,13 @@
                             }
                             else if (post.VisualContentType == VisualContentType.VIDEO.ToString())
                             {
-                                <div id="movie-url" class="ratio ratio-4x3 ">
-                                    <input id="UrlVideo" class="visually-hidden" value="@post.VisualContentPath"/>
-                                    @if (@post.Descripcion != null)
-                                    {
-                                        <p>@post.Descripcion</p>
-                                    }
+                                <input id="UrlVideo-@post.Id" class="visually-hidden" value="@post.VisualContentPath" />
+                                <div id="movie-url-@post.Id" class="ratio ratio-4x3">
+
+                                @if (@post.Descripcion != null)
+                                {
+                                    <p>@post.Descripcion</p>
+                                }
                                 </div>
                             }
                             else
@@ -114,31 +182,38 @@
                                 </div>
                             }
                             <div>
-                                @if (post.Comments != null)
+                                <div class="border-top">
+                                    <a class="btn btn-outline-info mt-1">Comentar</a>
+                                </div>
+                                @if (post.Comments == null)
+                                {
+                                      <p class="mt-1 border-top border-1">No hay comentarios</p>
+                                }
+                                else
                                 {
                                     foreach (var comment in post.Comments)
                                     {
-                                       
-                                    }   
+                                        <div>
+
+                                        </div>
+                                    }
                                 }
                             </div>
                         </div>
                     </div>
                 }
                 }
-
             </div>
         </div>
-        <partial name="_FollowFriends"></partial>
     </div>
 </div>
 
 @section scripts {
     <script>
-        const videoUrl = document.getElementById('UrlVideo').Value;
 
-        function Trailer(trailerLink) {
-            const trailerContainer = document.getElementById('movie-url');
+        function Trailer(postId) {
+            const trailerLink = document.getElementById(`UrlVideo-${postId}`).value;
+            const trailerContainer = document.getElementById(`movie-url-${postId}`);
             trailerContainer.innerHTML = '';
 
             const videoId = getVideoId(trailerLink);
@@ -155,7 +230,7 @@
                 iframe.title = "YouTube video player";
                 trailerContainer.appendChild(iframe);
             } else {
-                trailerContainer.textContent = 'The url from the video is not valid';
+                trailerContainer.textContent = 'The URL from the video is not valid';
             }
         }
 
@@ -168,6 +243,21 @@
                 return null;
             }
         }
-        Trailer('videoUrl');
+
+        @foreach (var post in postsViewBag.Where(p => p.VisualContentType == VisualContentType.VIDEO.ToString()))
+        {
+            <text>
+                Trailer('@post.Id');
+            </text>
+        }
+
+        var eliminarModal = document.getElementById('EliminarModal');
+        eliminarModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var postId = button.getAttribute('data-post-id');
+            var input = document.getElementById('post-id-hidden');
+            input.value = postId;
+        });
+
     </script>
 }

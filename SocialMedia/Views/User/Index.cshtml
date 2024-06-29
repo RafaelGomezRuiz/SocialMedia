@@ -18,16 +18,21 @@
                 }
                 <form method="post" asp-controller="User" asp-action="Index">
                     <div class="mb-3">
-                        <label asp-for="UserName" class="form-label">Correo del usuario</label>
+                        <label asp-for="UserName" class="form-label">Usuario</label>
                         <input class="form-control" asp-for="UserName">
                     </div>
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label">Contraseña</label>
-                        <input class="form-control" asp-for="Password">
+                        <input type="password" class="form-control" asp-for="Password">
                     </div>
-
-                    <button type="submit" class="btn btn-primary float-end">Iniciar sección</button>
-                    <a asp-controller="User" asp-action="ForgotPassword" class="btn btn-warning float-end me-2">Olvide mi contrasenia</a>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a asp-controller="User" asp-action="ForgotPassword" class="btn btn-link">Olvidé mi contraseña</a>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                        </div>
+                    </div>
                 </form>
 
             </div>

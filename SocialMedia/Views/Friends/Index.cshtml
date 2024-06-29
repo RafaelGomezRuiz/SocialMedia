@@ -1,0 +1,153 @@
+﻿@using SocialMedia.Core.Application.Dtos.Account
+@using SocialMedia.Core.Application.Helpers;
+@using SocialMedia.Core.Application.Enums
+@using SocialMedia.Core.Application.ViewModels.Posts;
+@inject IHttpContextAccessor contextAccessor;
+
+@model SavePostViewModel;
+@{
+    ViewData["Title"] = "Home Page";
+    var postsViewBag = ViewBag.Posts as List<PostViewModel>;
+    var userLoged = contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
+
+<div class="container">
+    <div class="row d-flex justify-content-start">
+        <div class=" col-3">
+            @await Html.PartialAsync("_Actions")
+        </div>
+        @* post *@
+        <div class=" card col-6 p-2 bg-light">
+            
+            <div class="card-body">
+                @if (postsViewBag == null)
+                {
+                    <div>
+                        <h4>No has creado publicaciones</h4>
+                    </div>
+                }
+                else
+                {
+                @foreach (var post in postsViewBag)
+                {
+                    <div class="card mb-3">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="">
+                                <img class="profile-picture" src=" @userLoged.ProfilePhoto " />
+                                <p>@userLoged.UserName</p>
+                            </div>
+                            <div class="">
+                                <p>@post.Created</p>
+                                <div class=" align-items-center">
+                                    <button type="button" class="btn btn-outline-danger justify-content-end" data-bs-toggle="modal" data-bs-target="#EliminarModal" data-post-id="@post.Id">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                        <button class="btn btn-outline-warning align-items-end"><i class="bi bi-pen"></i></button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @if(post.VisualContentType== VisualContentType.PHOTO.ToString()){
+                                    <img src="@post.VisualContentPath" class="img-fluid card-img-top" />
+                                @if (@post.Descripcion != null)
+                                {
+                                    <p>@post.Descripcion</p>
+                                }
+                            }
+                            else if (post.VisualContentType == VisualContentType.VIDEO.ToString())
+                            {
+                                <input id="UrlVideo-@post.Id" class="visually-hidden" value="@post.VisualContentPath" />
+                                <div id="movie-url-@post.Id" class="ratio ratio-4x3">
+
+                                @if (@post.Descripcion != null)
+                                {
+                                    <p>@post.Descripcion</p>
+                                }
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="movie-url" class="">
+                                    <p>@post.Descripcion</p>
+                                </div>
+                            }
+                            <div>
+                                <div class="border-top">
+                                    <a class="btn btn-outline-info mt-1">Comentar</a>
+                                </div>
+                                @if (post.Comments == null)
+                                {
+                                      <p class="mt-1 border-top border-1">No hay comentarios</p>
+                                }
+                                else
+                                {
+                                    foreach (var comment in post.Comments)
+                                    {
+                                        <div>
+
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function Trailer(postId) {
+            const trailerLink = document.getElementById(`UrlVideo-${postId}`).value;
+            const trailerContainer = document.getElementById(`movie-url-${postId}`);
+            trailerContainer.innerHTML = '';
+
+            const videoId = getVideoId(trailerLink);
+            if (videoId) {
+                const iframeSrc = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&autohide=1&showinfo=0&playsinline=1`;
+                const iframe = document.createElement('iframe');
+                iframe.src = iframeSrc;
+                iframe.width = "80%";
+                iframe.height = "50%";
+                iframe.frameBorder = "0";
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+                iframe.referrerpolicy = "strict-origin-when-cross-origin";
+                iframe.allowFullscreen = true;
+                iframe.title = "YouTube video player";
+                trailerContainer.appendChild(iframe);
+            } else {
+                trailerContainer.textContent = 'The URL from the video is not valid';
+            }
+        }
+
+        function getVideoId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            if (match && match[2].length == 11) {
+                return match[2];
+            } else {
+                return null;
+            }
+        }
+
+        @foreach (var post in postsViewBag.Where(p => p.VisualContentType == VisualContentType.VIDEO.ToString()))
+        {
+            <text>
+                Trailer('@post.Id');
+            </text>
+        }
+
+        var eliminarModal = document.getElementById('EliminarModal');
+        eliminarModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var postId = button.getAttribute('data-post-id');
+            var input = document.getElementById('post-id-hidden');
+            input.value = postId;
+        });
+
+    </script>
+}

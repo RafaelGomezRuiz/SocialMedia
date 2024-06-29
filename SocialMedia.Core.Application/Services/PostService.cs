@@ -10,6 +10,7 @@ using SocialMedia.Core.Domain.Entities;
 
 namespace SocialMedia.Core.Application.Services
 {
+
     public class PostService : GenericService<SavePostViewModel,PostViewModel,Post>,IPostService
     {
         protected readonly IPostRepository _postRepository;
@@ -33,6 +34,15 @@ namespace SocialMedia.Core.Application.Services
         public async Task<IEnumerable<PostViewModel>> GetAllWithIncludeWithFilter(PostViewModelFilter filters)
         {
             IEnumerable<Post> posts = await _postRepository.GetAllWithIncludeAsync(new List<string> { "Comments" });
+
+            var userId = _userLoged.Id;
+
+            // Imprimir el UserId logueado para verificar
+            Console.WriteLine($"User ID Logueado: {userId}");
+
+            // Filtrar posts por el UserId logueado
+            var filteredPosts = posts.Where(post => post.UserId == userId).ToList();
+
             if (filters.FromUserOrFriends==PostsFrom.USER)
             {
                 return posts.Where(post=>post.UserId == _userLoged.Id).Select(s=>new PostViewModel
@@ -43,7 +53,7 @@ namespace SocialMedia.Core.Application.Services
                     VisualContentType=s.VisualContentType,
                     Created=s.Created,
                     UserId=s.UserId
-                });
+                }).OrderByDescending(s=>s.Created).ToList();
             }
             //else
             //{

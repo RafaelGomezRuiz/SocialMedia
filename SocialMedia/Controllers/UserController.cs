@@ -4,6 +4,7 @@ using SocialMedia.Core.Application.Enums;
 using SocialMedia.Core.Application.Helpers;
 using SocialMedia.Core.Application.Interfaces.Services;
 using SocialMedia.Core.Application.ViewModels.Users;
+using WebApp.StockApp.MiddleWares;
 
 namespace WebApp.SocialMedia.Controllers
 {
@@ -15,11 +16,14 @@ namespace WebApp.SocialMedia.Controllers
         {
             this._userService = _userService;
         }
+
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult Index()
         {
             return View(new LoginViewModel());
         }
 
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(LoginViewModel loginVm)
@@ -43,10 +47,14 @@ namespace WebApp.SocialMedia.Controllers
             return RedirectToRoute(new { controller = "User", action = "index" });
         }
 
+        [ServiceFilter(typeof(LoginAuthorize))]
+
         public IActionResult SaveUser()
         {
             return View(new SaveUserViewModel());
         }
+
+        [ServiceFilter(typeof(LoginAuthorize))]
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -70,16 +78,27 @@ namespace WebApp.SocialMedia.Controllers
             return RedirectToRoute(new { controller = "User", action = "index" });
         }
 
+        //[ServiceFilter(typeof(LoginAuthorize))]
+
+        //public IActionResult Edit(string id)
+        //{
+        //    SaveUserViewModel saveUserViewModel=_userService
+        //    return View(new LoginViewModel());
+        //}
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             string response = await _userService.ConfirmEmailAsync(userId, token);
             return View("ConfirmEmail", response);
         }
 
+        [ServiceFilter(typeof(LoginAuthorize))]
+
         public async Task<IActionResult> ForgotPassword()
         {
             return View(new ForgotPasswordViewModel());
         }
+
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordVm)
@@ -99,6 +118,8 @@ namespace WebApp.SocialMedia.Controllers
             //mandar mensaje de que se envio
             return RedirectToRoute(new { controller = "user", action = "index" });
         }
+
+        [ServiceFilter(typeof(LoginAuthorize))]
 
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordVm)
         {

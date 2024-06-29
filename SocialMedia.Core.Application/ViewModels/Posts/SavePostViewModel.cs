@@ -15,6 +15,7 @@ namespace SocialMedia.Core.Application.ViewModels.Posts
         public string? VisualContentPath { get; set; }
         [DataType(DataType.Text)]
         public string? Descripcion { get; set; }
+        [DataType(DataType.Text)]
         public string? VisualContentType { get; set; }
         
         [DataType(DataType.Upload)]

@@ -3,6 +3,7 @@ using SocialMedia.Infraestructure.Identity;
 using SocialMedia.Infraestructure.Persistence;
 using SocialMedia.Infraestructure.Shared;
 using WebApp.SocialMedia.MiddleWares;
+using WebApp.StockApp.MiddleWares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddApplicationLayer(builder.Configuration);
 builder.Services.AddControllersWithViews();
 
 //sesiones
+builder.Services.AddScoped<LoginAuthorize>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<ValidateUserSession>();
 

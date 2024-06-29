@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SocialMedia.Core.Application.Enums;
 using SocialMedia.Core.Application.Interfaces.Repositories;
 using SocialMedia.Core.Application.Interfaces.Services;
@@ -8,6 +9,8 @@ using System.Diagnostics;
 
 namespace SocialMedia.Controllers
 {
+    [Authorize]
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

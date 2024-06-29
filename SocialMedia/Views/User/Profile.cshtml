@@ -1,0 +1,24 @@
+﻿@using SocialMedia.Core.Application.Dtos.Account
+@using SocialMedia.Core.Application.Helpers;
+@using SocialMedia.Core.Application.Enums
+@using SocialMedia.Core.Application.ViewModels.Posts;
+@inject IHttpContextAccessor contextAccessor;
+
+@model SavePostViewModel;
+@{
+    ViewData["Title"] = "Profile Page";
+    // var postsViewBag = ViewBag.Posts as List<PostViewModel>;
+    var userLoged = contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
+
+<div class="container">
+    <div class="row d-flex justify-content-start">
+        <div class=" col-3">
+            @await Html.PartialAsync("_Actions")
+        </div>
+        <div class=" col-3">
+            @await Html.PartialAsync("_SaveUser")
+        </div>
+
+    </div>
+</div>
