@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SocialMedia.Core.Application.Enums;
 using SocialMedia.Core.Application.Helpers;
 using SocialMedia.Core.Application.Interfaces.Services;
@@ -6,6 +7,8 @@ using SocialMedia.Core.Application.ViewModels.Posts;
 
 namespace WebApp.SocialMedia.Controllers
 {
+    [Authorize]
+
     public class PostController : Controller
     {
         protected readonly IPostService _postService;

@@ -1,4 +1,4 @@
-﻿using Azure;
+﻿    using Azure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using SocialMedia.Core.Application.Dtos.Account;
